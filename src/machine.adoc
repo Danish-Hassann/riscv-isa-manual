@@ -3038,7 +3038,7 @@ Platforms vary widely in demands for physical memory protection, and
 some platforms may provide other PMP structures in addition to or
 instead of the scheme described in this section.
 ====
-
+[[norm:mstatus_MPRV_behaviour]]
 PMP checks are applied to all accesses whose effective privilege mode is
 S or U, including instruction fetches and data accesses in S and U mode,
 and data accesses in M-mode when the MPRV bit in `mstatus` is set and
@@ -3117,6 +3117,7 @@ include::images/bytefield/pmpaddr-rv32.edn[]
 .PMP address register format, RV64.
 include::images/bytefield/pmpaddr-rv64.edn[]
 
+[[norm:pmp_csr_R_W_X_permission]]
 <<pmpcfg>> shows the layout of a PMP configuration
 register. The R, W, and X bits, when set, indicate that the PMP entry
 permits read, write, and instruction execution, respectively. When one
@@ -3128,21 +3129,21 @@ W, and X fields form a collective *WARL* field for which the combinations with R
 include::images/bytefield/pmpcfg.edn[]
 
 
-Attempting to fetch an instruction from a PMP region that does not have
-execute permissions raises an instruction access-fault exception.
-Attempting to execute a load or load-reserved instruction which accesses
+[#norm:pmp_exec_instr_fault]#Attempting to fetch an instruction from a PMP region that does not have
+execute permissions raises an instruction access-fault exception.#
+[#norm:pmp_read_instr_fault]#Attempting to execute a load or load-reserved instruction which accesses
 a physical address within a PMP region without read permissions raises a
-load access-fault exception. Attempting to execute a store,
+load access-fault exception.# [#norm:pmp_read_instr_fault]#Attempting to execute a store,
 store-conditional, or AMO instruction which accesses a physical address
 within a PMP region without write permissions raises a store
-access-fault exception.
+access-fault exception.#
 
 ===== Address Matching
 
 The A field in a PMP entry's configuration register encodes the
 address-matching mode of the associated PMP address register. The
 encoding of this field is shown in <<pmpcfg-a>>.
-When A=0, this PMP entry is disabled and matches no addresses. Two other
+[#norm:pmp_A_disabled]#When A=0, this PMP entry is disabled and matches no addresses.# Two other
 address-matching modes are supported: naturally aligned power-of-2
 regions (NAPOT), including the special case of naturally aligned
 four-byte regions (NA4); and the top boundary of an arbitrary range
@@ -3205,7 +3206,7 @@ NAPOT
 2^XLEN+2^-byte NAPOT range +
 2^XLEN+3^-byte NAPOT range
 |===
-
+[[norm:pmp_TOR_addr_matching]]
 If TOR is selected, the associated address register forms the top of the
 address range, and the preceding PMP address register forms the bottom
 of the address range. If PMP entry __i__'s A field is set to
@@ -3213,17 +3214,17 @@ TOR, the entry matches any address _y_ such that `pmpaddr~i-1~`&#8804;__y__<``pm
 any address `y<pmpaddr~0~`.
 
 [NOTE]
-====
+====  
 If  `pmpaddr~i-1~&#8805;``pmpaddr~i~``` and `pmpcfg~i~.A`=TOR, then PMP entry _i_ matches no addresses.
 ====
 
 Although the PMP mechanism supports regions as small as four bytes,
 platforms may specify coarser PMP regions. In general, the PMP grain is
 latexmath:[$2^{G+2}$] bytes and must be the same across all PMP regions.
-When latexmath:[$G \geq 1$], the NA4 mode is not selectable. When
+[#norm:pmp_NA4_disabled]#When latexmath:[$G \geq 1$], the NA4 mode is not selectable.# [#norm:pmp_NAPOT_region_sz]When
 latexmath:[$G \geq 2$] and latexmath:[${\tt pmpcfg}_i$].A[1] is set,
 i.e. the mode is NAPOT, then bits latexmath:[${\tt pmpaddr}_i$][G-2:0]
-read as all ones. When latexmath:[$G \geq 1$] and
+read as all ones.# When latexmath:[$G \geq 1$] and
 latexmath:[${\tt pmpcfg}_i$].A[1] is clear, i.e. the mode is OFF or TOR,
 then bits latexmath:[${\tt pmpaddr}_i$][G-1:0] read as all zeros. Bits
 latexmath:[${\tt
@@ -3241,7 +3242,7 @@ Software may determine the PMP granularity by writing zero to `pmp0cfg`, then wr
 ====
 
 ===== Locking and Privilege Mode
-
+[[norm:pmp_csr_L_bit_lock]]
 The L bit indicates that the PMP entry is locked, i.e., writes to the
 configuration register and associated address registers are ignored.
 Locked PMP entries remain locked until the hart is reset. If PMP entry
@@ -3254,7 +3255,7 @@ to TOR, writes to ``pmpaddr``__i__-1 are ignored.
 Setting the L bit locks the PMP entry even when the A field is set to
 OFF.
 ====
-
+[[norm:pmp_csr_Lbit_Mmode_access]]
 In addition to locking the PMP entry, the L bit indicates whether the
 R/W/X permissions are enforced on M-mode accesses. When the L bit is
 set, these permissions are enforced for all privilege modes. When the L
