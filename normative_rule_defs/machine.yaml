@@ -167,3 +167,11 @@ normative_rule_definitions:
     tags: ["norm:pmp_access_fault_instr_fail"]
   - name: pmp_misaligned_implementation
     tags: ["norm:pmp_misaligned_implementation"]
+  - name: pmp_vmem_all_access
+    tags: ["pmp_vmem_all_access"]
+  - name: pmp_vmem_speculative_check
+    tags: ["norm:pmp_vmem_speculative_check"]
+  - name: pmp_vmem_sync
+    tags: ["norm:pmp_vmem_sync"]
+  - name: pmp_vmem_sfence
+    tags: ["norm:pmp_vmem_sfence"]

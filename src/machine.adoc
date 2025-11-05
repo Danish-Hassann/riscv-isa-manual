@@ -3262,6 +3262,7 @@ in RV32D), even when the store address is naturally aligned.
 [[pmp-vmem]]
 ==== Physical Memory Protection and Paging
 
+[[norm:pmp_vmem_all_access]]
 The Physical Memory Protection mechanism is designed to compose with the
 page-based virtual memory systems described in
 <<supervisor>>. When paging is enabled,
@@ -3270,20 +3271,8 @@ physical-memory accesses, including implicit references to the page
 tables. The PMP checks apply to all of these accesses. The effective
 privilege mode for implicit page-table accesses is S.
 
-Implementations with virtual memory are permitted to perform address
-translations speculatively and earlier than required by an explicit
-memory access, and are permitted to cache them in address translation
-cache structures—including possibly caching the identity mappings from
-effective address to physical address used in Bare translation modes and
-M-mode. The PMP settings for the resulting physical address may be
-checked (and possibly cached) at any point between the address
-translation and the explicit memory access. Hence, when the PMP settings
-are modified, M-mode software must synchronize the PMP settings with the
-virtual memory system and any PMP or address-translation caches. This is
-accomplished by executing an SFENCE.VMA instruction with _rs1_=`x0` and
-_rs2_=`x0`, after the PMP CSRs are written.
-See <<hyp-mm-fences>> for additional synchronization requirements when the
-hypervisor extension is implemented.
+[norm:pmp_vmem_speculative_check]#Implementations with virtual memory are permitted to perform address translations speculatively and earlier than required by an explicit memory access, and are permitted to cache them in address translation cache structures—including possibly caching the identity mappings from effective address to physical address used in Bare translation modes and M-mode. The PMP settings for the resulting physical address may be checked (and possibly cached) at any point between the address translation and the explicit memory access.# [norm:pmp_vmem_sync]#Hence, when the PMP settings are modified, M-mode software must synchronize the PMP settings with the virtual memory system and any PMP or address-translation caches. This is accomplished by executing an SFENCE.VMA instruction with _rs1_=`x0` and _rs2_=`x0`, after the PMP CSRs are written.# See <<hyp-mm-fences>> for additional synchronization requirements when the hypervisor extension is implemented.
 
+[[norm:pmp_vmem_sfence]]
 If page-based virtual memory is not implemented, memory accesses check
 the PMP settings synchronously, so no SFENCE.VMA is needed.
