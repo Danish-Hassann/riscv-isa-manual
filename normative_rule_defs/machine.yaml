@@ -93,3 +93,29 @@ normative_rule_definitions:
     tags: ["norm:mstatush_sz_acc"]
   - name: mstatush_enc
     tags: ["norm:mstatush_enc"]
+  - name: pmp_granularity
+    tags: ["norm:pmp_granularity"]
+  - name: pmp_M_mode_low_priv_param
+    tags: ["norm:pmp_M_mode_low_priv_param"]
+  - name: mstatus_MPRV_behaviour
+    tags: ["norm:mstatus_MPRV_behaviour"]  
+  - name: pmp_x_instr_fault
+    tags: ["norm:pmp_x_instr_fault"]  
+  - name: pmp_r_load_fault
+    tags: ["norm:pmp_r_load_fault"]
+  - name: pmp_w_store_fault
+    tags: ["norm:pmp_w_store_fault"]
+  - name: pmp_A_encoding
+    tags: ["norm:pmp_A_encoding"]
+  - name: pmp_A_disabled
+    tags: ["norm:pmp_A_disabled"]
+  - name: pmp_TOR_addr_match
+    tags: ["norm:pmp_TOR_addr_match"]
+  - name: pmp_NA4_disabled
+    tags: ["norm:pmp_NA4_disabled"]
+  - name: pmp_NAPOT_region_sz
+    tags: ["norm:pmp_NAPOT_region_sz"]
+  - name: pmp_csr_L_bit_lock
+    tags: ["norm:pmp_csr_L_bit_lock"]
+  - name: pmp_csr_Lbit_Mmode_access
+    tags: [norm:pmp_csr_Lbit_Mmode_access]

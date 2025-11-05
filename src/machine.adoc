@@ -3026,11 +3026,8 @@ privileges (read, write, execute) to be specified for each physical
 memory region. The PMP values are checked in parallel with the PMA
 checks described in <<pma>>.
 
-The granularity of PMP access control settings are platform-specific,
-but the standard PMP encoding supports regions as small as four bytes.
-Certain regions’ privileges can be hardwired—for example, some regions
-might only ever be visible in machine mode but in no lower-privilege
-layers.
+[[norm:pmp_granularity]]#The granularity of PMP access control settings are platform-specific, but the standard PMP encoding supports regions as small as four bytes.#
+[[norm:pmp_M_mode_low_priv_param]]#Certain regions’ privileges can be hardwired—for example, some regions might only ever be visible in machine mode but in no lower-privilege layers.#
 
 [NOTE]
 ====
@@ -3129,20 +3126,15 @@ W, and X fields form a collective *WARL* field for which the combinations with R
 include::images/bytefield/pmpcfg.edn[]
 
 
-[#norm:pmp_exec_instr_fault]#Attempting to fetch an instruction from a PMP region that does not have
-execute permissions raises an instruction access-fault exception.#
-[#norm:pmp_read_instr_fault]#Attempting to execute a load or load-reserved instruction which accesses
-a physical address within a PMP region without read permissions raises a
-load access-fault exception.# [#norm:pmp_read_instr_fault]#Attempting to execute a store,
+[#norm:pmp_x_instr_fault]#Attempting to fetch an instruction from a PMP region that does not have execute permissions raises an instruction access-fault exception.#
+[#norm:pmp_r_load_fault]#Attempting to execute a load or load-reserved instruction which accesses a physical address within a PMP region without read permissions raises a load access-fault exception.# [#norm:pmp_w_store_fault]#Attempting to execute a store,
 store-conditional, or AMO instruction which accesses a physical address
 within a PMP region without write permissions raises a store
 access-fault exception.#
 
 ===== Address Matching
 
-The A field in a PMP entry's configuration register encodes the
-address-matching mode of the associated PMP address register. The
-encoding of this field is shown in <<pmpcfg-a>>.
+[#norm:pmp_A_encoding]#The A field in a PMP entry's configuration register encodes the address-matching mode of the associated PMP address register. The encoding of this field is shown in <<pmpcfg-a>>.#
 [#norm:pmp_A_disabled]#When A=0, this PMP entry is disabled and matches no addresses.# Two other
 address-matching modes are supported: naturally aligned power-of-2
 regions (NAPOT), including the special case of naturally aligned
@@ -3206,7 +3198,7 @@ NAPOT
 2^XLEN+2^-byte NAPOT range +
 2^XLEN+3^-byte NAPOT range
 |===
-[[norm:pmp_TOR_addr_matching]]
+[[norm:pmp_TOR_addr_match]]
 If TOR is selected, the associated address register forms the top of the
 address range, and the preceding PMP address register forms the bottom
 of the address range. If PMP entry __i__'s A field is set to
@@ -3221,14 +3213,7 @@ If  `pmpaddr~i-1~&#8805;``pmpaddr~i~``` and `pmpcfg~i~.A`=TOR, then PMP entry _i
 Although the PMP mechanism supports regions as small as four bytes,
 platforms may specify coarser PMP regions. In general, the PMP grain is
 latexmath:[$2^{G+2}$] bytes and must be the same across all PMP regions.
-[#norm:pmp_NA4_disabled]#When latexmath:[$G \geq 1$], the NA4 mode is not selectable.# [#norm:pmp_NAPOT_region_sz]When
-latexmath:[$G \geq 2$] and latexmath:[${\tt pmpcfg}_i$].A[1] is set,
-i.e. the mode is NAPOT, then bits latexmath:[${\tt pmpaddr}_i$][G-2:0]
-read as all ones.# When latexmath:[$G \geq 1$] and
-latexmath:[${\tt pmpcfg}_i$].A[1] is clear, i.e. the mode is OFF or TOR,
-then bits latexmath:[${\tt pmpaddr}_i$][G-1:0] read as all zeros. Bits
-latexmath:[${\tt
-pmpaddr}_i$][G-1:0] do not affect the TOR address-matching logic.
+[norm:pmp_NA4_disabled]#When latexmath:[$G \geq 1$], the NA4 mode is not selectable.# [norm:pmp_NAPOT_region_sz]#When latexmath:[$G \geq 2$] and latexmath:[${\tt pmpcfg}_i$].A[1] is set, i.e. the mode is NAPOT, then bits latexmath:[${\tt pmpaddr}_i$][G-2:0] read as all ones.# When latexmath:[$G \geq 1$] and latexmath:[${\tt pmpcfg}_i$].A[1] is clear, i.e. the mode is OFF or TOR, then bits latexmath:[${\tt pmpaddr}_i$][G-1:0] read as all zeros. Bits latexmath:[${\tt pmpaddr}_i$][G-1:0] do not affect the TOR address-matching logic.
 Although changing latexmath:[${\tt pmpcfg}_i$].A[1] affects the value
 read from latexmath:[${\tt pmpaddr}_i$], it does not affect the
 underlying value stored in that register—in particular,
