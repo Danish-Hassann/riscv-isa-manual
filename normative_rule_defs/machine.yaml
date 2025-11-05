@@ -98,7 +98,19 @@ normative_rule_definitions:
   - name: pmp_M_mode_low_priv_param
     tags: ["norm:pmp_M_mode_low_priv_param"]
   - name: mstatus_MPRV_behaviour
-    tags: ["norm:mstatus_MPRV_behaviour"]  
+    tags: ["norm:mstatus_MPRV_behaviour"]
+  - name: pmp_entry_addr_config
+    tags: [norm:pmp_entry_addr_config]
+  - name: pmp_precede_entry
+    tags: [norm:pmp_precede_entry]
+  - name: pmp_64_entry
+    tags: [norm:pmp_64_entry]
+  - name: pmp_lowest_entry_implement
+    tags: [norm:pmp_lowest_entry_implement]
+  - name: pmp_CSR_r_only_param
+    tags: [norm:pmp_CSR_r_only_param]
+  - name: pmp_CSR_M_mode
+    tags: [norm:pmp_CSR_M_mode]
   - name: pmp_x_instr_fault
     tags: ["norm:pmp_x_instr_fault"]  
   - name: pmp_r_load_fault
@@ -107,6 +119,10 @@ normative_rule_definitions:
     tags: ["norm:pmp_w_store_fault"]
   - name: pmp_A_encoding
     tags: ["norm:pmp_A_encoding"]
+  - name: pmp_A_NAPOT
+    tags: ["norm:pmp_A_NAPOT"]
+  - name: pmp_A_TOR
+    name: ["norm:pmp_A_TOR"]
   - name: pmp_A_disabled
     tags: ["norm:pmp_A_disabled"]
   - name: pmp_TOR_addr_match
