@@ -35,12 +35,14 @@ Without being able to protect less-privileged modes from Machine mode, it is not
 [[mseccfg_csr]]
 === mseccfg CSR
 
-. *Machine Security Configuration (mseccfg)* is a new RW Machine mode CSR, used for configuring various security mechanisms present on the hart, and only accessible to Machine mode. It is 64 bits wide, and is at address *0x747 on RV64* and *0x747 (low 32bits), 0x757 (high 32bits) on RV32*. All mseccfg fields defined on this extension are WARL, and the remaining bits are reserved for future standard use and should always read zero. The reset value of mseccfg is implementation-specific, otherwise if backwards compatibility is a requirement it should reset to zero on hard reset.
+. *Machine Security Configuration (mseccfg)* is a new RW Machine mode CSR, used for configuring various security mechanisms present on the hart, and only accessible to Machine mode. It is 64 bits wide, and is at address *0x747 on RV64* and *0x747 (low 32bits), 0x757 (high 32bits) on RV32*. [#norm:mseccfg_WARL]#All mseccfg fields defined on this extension are WARL#, and the remaining bits are reserved for future standard use and should always read zero. The reset value of mseccfg is implementation-specific, otherwise if backwards compatibility is a requirement it should reset to zero on hard reset.
 
 . On ``mseccfg`` we introduce a field on bit 2 called *Rule Locking Bypass (mseccfg.RLB)* with the following functionality:
 +
+[[norm:mseccfg-RLB_op]]
 .. When ``mseccfg.RLB`` is 1 *locked* PMP rules may be removed/modified and *locked* PMP entries may be edited.
 
+[[norm:mseccfg-RLB_locked]]
 .. When ``mseccfg.RLB`` is 0 and ``pmpcfg.L`` is 1 in any rule or entry (including disabled entries), then ``mseccfg.RLB`` remains 0 and any further modifications to ``mseccfg.RLB`` are ignored until a *PMP reset*.
 +
 [CAUTION]
@@ -48,10 +50,12 @@ Without being able to protect less-privileged modes from Machine mode, it is not
 Note that this feature is intended to be used as a debug mechanism, or as a temporary workaround during the boot process for simplifying software, and optimizing the allocation of memory and PMP rules. Using this functionality under normal operation, after the boot process is completed, should be avoided since it weakens the protection of _M-mode-only_ rules. Vendors who don’t need this functionality may hardwire this field to 0.
 ====
 
+[[norm:mseccfg-MMWP_op]]
 . On ``mseccfg`` we introduce a field in bit 1 called *Machine-Mode Allowlist Policy (mseccfg.MMWP)*. This is a sticky bit, meaning that once set it cannot be unset until a *PMP reset*. When set it changes the default PMP policy for M-mode when accessing memory regions that don’t have a matching PMP rule, to *denied* instead of *ignored*.
 
 . On ``mseccfg`` we introduce a field in bit 0 called *Machine Mode Lockdown (mseccfg.MML)*. This is a sticky bit, meaning that once set it cannot be unset until a *PMP reset*. When ``mseccfg.MML`` is set the system's behavior changes in the following way:
 
+[[norm:mseccfg-MML_op]]
 .. The meaning of ``pmpcfg.L`` changes: Instead of marking a rule as *locked* and *enforced* in all modes, it now marks a rule as *M-mode-only* when set and *S/U-mode-only* when unset. The formerly reserved encoding of ``pmpcfg.RW=01``, and the encoding ``pmpcfg.LRWX=1111``, now encode a *Shared-Region*.
 +
 An _M-mode-only_ rule is *enforced* on Machine mode and *denied* in Supervisor or User mode. It also remains *locked* so that any further modifications to its associated configuration or address registers are ignored until a *PMP reset*, unless ``mseccfg.RLB`` is set.
@@ -60,10 +64,13 @@ An _S/U-mode-only_ rule is *enforced* on Supervisor and User modes and *denied* 
 +
 A _Shared-Region_ rule is *enforced* on all modes, with restrictions depending on the ``pmpcfg.L`` and ``pmpcfg.X`` bits:
 +
+[[norm:mseccfg-MML_shared-region_data_access]]
 * A _Shared-Region_ rule where ``pmpcfg.L`` is not set can be used for sharing data between M-mode and S/U-mode, so is not executable. M-mode has read/write access to that region, and S/U-mode has read access if ``pmpcfg.X`` is not set, or read/write access if ``pmpcfg.X`` is set.
 +
+[[norm:mseccfg-MML_shared-region_code_access]]
 * A _Shared-Region_ rule where ``pmpcfg.L`` is set can be used for sharing code between M-mode and S/U-mode, so is not writable. Both M-mode and S/U-mode have execute access on the region, and M-mode also has read access if ``pmpcfg.X`` is set. The rule remains *locked* so that any further modifications to its associated configuration or address registers are ignored until a *PMP reset*, unless ``mseccfg.RLB`` is set.
 +
+[[norm:mseccfg-MML_shared-region_readonly_access]]
 * The encoding ``pmpcfg.LRWX=1111`` can be used for sharing data between M-mode and S/U mode, where both modes only have read-only access to the region. The rule remains *locked* so that any further modifications to its associated configuration or address registers are ignored until a *PMP reset*, unless ``mseccfg.RLB`` is set.
 
 
@@ -105,7 +112,6 @@ A _Shared-Region_ rule is *enforced* on all modes, with restrictions depending o
 image::smepmp-visual-representation.png[]
 
 === Smepmp software discovery
-
 Since all fields defined on ``mseccfg`` as part of this extension are locked when set (``MMWP``/``MML``) or locked when cleared (``RLB``), software can't poll them for determining the presence of Smepmp. It is expected that BootROM will set ``mseccfg.MMWP`` and/or ``mseccfg.MML`` during early boot, before jumping to the firmware, so that the firmware will be able to determine the presence of Smepmp by reading ``mseccfg`` and checking the state of ``mseccfg.MMWP`` and ``mseccfg.MML``.
 
 [[rationale]]
@@ -124,11 +130,13 @@ Also when ``mseccfg.MML`` is set, according to 4b it’s not possible to add a _
 +
 [NOTE]
 ====
+
 If ``mseccfg.RLB`` is not used and left unset, it will be locked as soon as a PMP rule/entry with the ``pmpcfg.L`` bit set is configured.
 ====
 +
 [IMPORTANT]
 ====
+[[norm:pmp_locked_rules_priority]]
 Since PMP rules with a higher priority override rules with a lower priority, locked rules must precede non-locked rules.
 ====
 
