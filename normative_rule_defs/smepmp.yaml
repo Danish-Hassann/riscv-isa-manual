@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=../docs-resources/schemas/defs-schema.json
+
+$schema: ../docs-resources/schemas/defs-schema.json#
+
+chapter_name: Smepmp Extension
+
+normative_rule_definitions:
+
+- name: mseccfg-RLB_op
+  tags: ["norm:mseccfg-RLB_op"]
+
+- name: mseccfg-RLB_locked
+  tags: ["norm:mseccfg-RLB_locked"]
+
+- name: mseccfg-MMWP_op
+  tags: ["norm:mseccfg-MMWP_op"]
+
+- name: mseccfg-MML_op
+  tags: ["norm:mseccfg-MML_op"]
+
+- name: mseccfg-MML_shared-region_data_access
+  tags: ["norm:mseccfg-MML_shared-region_data_access"]
+
+- name: mseccfg-MML_shared-region_code_access
+  tags: ["norm:mseccfg-MML_shared-region_code_access"]
+
+- name: mseccfg-MML_shared-region_readonly_access
+  tags: ["norm:mseccfg-MML_shared-region_readonly_access"]
+
+- name: pmp_locked_rules_priority
+  tags: ["norm:pmp_locked_rules_priority"]
+
+- name: pmp_ignored_rules
+  tags: ["norm:pmp_ignored_rules"]
+
+- name: pmp_M_mode_X_permission
+  tags: ["norm:pmp_M_mode_X_permission"]
+
+- name: pmp_M_mode_X_permission
+  tags: ["norm:pmp_M_mode_X_permission"]
+
