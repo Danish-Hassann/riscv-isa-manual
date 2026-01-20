@@ -6,36 +6,74 @@ chapter_name: Smepmp Extension
 
 normative_rule_definitions:
 
+- name: mseccfg_address
+  tags: ["norm:mseccfg_address"]
+
+- name: mseccfg_WARL
+  tags: ["norm:mseccfg_WARL"]
+
+- name: mseccfg_reset_value
+  tags: ["norm:mseccfg_reset_value"]
+
 - name: mseccfg-RLB_op
   tags: ["norm:mseccfg-RLB_op"]
 
 - name: mseccfg-RLB_locked
   tags: ["norm:mseccfg-RLB_locked"]
 
+- name: mseccfg-MMWP_sticky_bit
+  tags: ["norm:mseccfg-MMWP_sticky_bit"]
+
 - name: mseccfg-MMWP_op
   tags: ["norm:mseccfg-MMWP_op"]
+
+- name: mseccfg-MML_sticky_bit
+  tags: ["norm:mseccfg-MML_sticky_bit"]
 
 - name: mseccfg-MML_op
   tags: ["norm:mseccfg-MML_op"]
 
-- name: mseccfg-MML_shared-region_data_access
-  tags: ["norm:mseccfg-MML_shared-region_data_access"]
+- name: smepmp_shared_region_encoding
+  tags: ["norm:smepmp_shared_region_encoding"]
 
-- name: mseccfg-MML_shared-region_code_access
-  tags: ["norm:mseccfg-MML_shared-region_code_access"]
+- name: mmode_only_rule
+  tags: ["norm:mmode_only_rule"]
 
-- name: mseccfg-MML_shared-region_readonly_access
-  tags: ["norm:mseccfg-MML_shared-region_readonly_access"]
+- name: sumode_only_rule
+  tags: ["norm:sumode_only_rule"]
+
+- name: smepmp_shared_data_region_rule
+  tags: ["norm:smepmp_shared_data_region_rule"]
+
+- name: smepmp_shared_data_region_rw_access
+  tags: ["norm:smepmp_shared_data_region_rw_access"]
+
+- name: smepmp_shared_code_region_rule
+  tags: ["norm:smepmp_shared_code_region_rule"]
+
+- name: smepmp_shared_code_region_rx_access
+  tags: ["norm:smepmp_shared_code_region_rx_access"]
+
+- name: smepmp_shared_code_region_rule_locked
+  tags: ["norm:smepmp_shared_code_region_rule_locked"]
+
+- name: smepmp_shared_region_readonly_access
+  tags: ["norm:smepmp_shared_region_readonly_access"]
+
+- name: smepmp_ignored_rules
+  tags: ["norm:smepmp_ignored_rules"]
+
+- name: smepmp_mmode_exec_permission]
+  tags: ["norm:smepmp_mmode_exec_permission]"]
+
+- name: smepmp_shared_region_no_exec_priv_rule
+  tags: ["norm:smepmp_shared_region_no_exec_priv_rule"]
+
+- name: smepmp_shared_region_exec_priv_rule_on_RLB_set
+  tags: ["norm:smepmp_shared_region_exec_priv_rule_on_RLB_set"]
+
+- name: smepmp_shared_region_exec_priv_rule_on_pmp_reset
+  tags: ["norm:smepmp_shared_region_exec_priv_rule_on_pmp_reset"]
 
 - name: pmp_locked_rules_priority
   tags: ["norm:pmp_locked_rules_priority"]
-
-- name: pmp_ignored_rules
-  tags: ["norm:pmp_ignored_rules"]
-
-- name: pmp_M_mode_X_permission
-  tags: ["norm:pmp_M_mode_X_permission"]
-
-- name: pmp_M_mode_X_permission
-  tags: ["norm:pmp_M_mode_X_permission"]
-
